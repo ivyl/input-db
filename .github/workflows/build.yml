@@ -1,0 +1,31 @@
+name: Build The Tools
+on:
+    push:
+      paths:
+      - 'src/**'
+
+jobs:
+  build-tools:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checout code
+        id: checkout-code
+        uses: actions/checkout@v2
+
+      - name: build
+        id: build
+        uses: Joshua-Ashton/arch-mingw-github-action@v7
+        with:
+          command: |
+            cd src/dinput-dumper
+            make
+
+      - name: Upload artifacts
+        id: upload-artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: tools
+          path: src/dinput-dumper/dinput-dumper.exe
+          if-no-files-found: error
+
